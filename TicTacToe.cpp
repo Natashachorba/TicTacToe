@@ -1,9 +1,12 @@
 /*
 */
+#include <stdlib.h>
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
+#include <ctime>
+
 
 using namespace std;
 
@@ -56,7 +59,7 @@ int validateLocation(const vector<vector<char> >& myBoard, int x, int y){
   return xvalid && yvalid && (myBoard[x][y] == ' ');
 }
 
-int playTTT(int boardSize){
+int playTTT(int boardSize, char whosTurn){
   //create a NxN board (I'm sure there's a better way but idk)
   vector<vector<char> > myBoard;
   for (int i=0;i<boardSize;i++){
@@ -69,7 +72,6 @@ int playTTT(int boardSize){
   cout<< "Starting a game of Tic Tac Toe"<<endl;
   ticTacToeBoard(myBoard);
   int turnsTaken = 0;
-  char whosTurn = 'X';
   
   while (turnsTaken<(boardSize*boardSize)){
     int row; int col;
@@ -94,6 +96,8 @@ int playTTT(int boardSize){
 }
 
 int main(int argc, char *argv[]){
+  //used for determining who goes first
+  srand(time(NULL));
   int boardSize = 3; //maybe should be changeable? idk
   string firstPlayer = "Player 1";
   string secondPlayer = "AI";
@@ -107,7 +111,9 @@ int main(int argc, char *argv[]){
   }
   
   while (boardSize>0){
-    int result = playTTT(boardSize);
+    string whosFirst = rand()%2 ? firstPlayer : secondPlayer;
+    cout<<whosFirst<<" goes first this time!"<<endl;
+    int result = playTTT(boardSize,(whosFirst==firstPlayer) ? 'X' : 'O');
     if (result == 1){
       cout<<firstPlayer<<" won!"<<endl;
     }
